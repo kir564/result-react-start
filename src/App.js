@@ -3,6 +3,8 @@ import './App.css';
 import React from 'react';
 
 function App() {
+  // декларативный стиль - это объявление тегов, которое указывает какая сущность получиться, вызов функций; императивный - описание параметров (className, src, alt  и т.п), вложенность ??
+
   return (
     <div className="App">
       <header className="App-header">
