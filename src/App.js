@@ -17,6 +17,7 @@ function App() {
         >
           Learn React
         </a>
+        <div>{new Date().getFullYear()}</div>
       </header>
     </div>
   );
