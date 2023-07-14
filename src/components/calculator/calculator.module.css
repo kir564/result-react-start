@@ -1,0 +1,23 @@
+.calc {
+    box-sizing: border-box;
+    width: 200px;
+    background-color: black;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.display {
+    height: 60px;
+    background-color: powderblue;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr ;
+}
+
+.button {
+    height: 45px;
+}
