@@ -7,10 +7,14 @@
 }
 
 .display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 60px;
     background-color: powderblue;
     margin-bottom: 5px;
     border-radius: 5px;
+    font-size: 28px;
 }
 
 .buttons {
