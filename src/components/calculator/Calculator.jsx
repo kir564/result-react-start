@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import classes from './calculator.module.css';
 
-let operation = '';
+
 
 export function Calculator() {
   const [value, setValue] = useState('');
   const [color, setColor] = useState('');
+  const [operation, setOperation] = useState('')
 
   const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const operations = ['+', '-', '=', 'C'];
@@ -28,7 +29,7 @@ export function Calculator() {
       }
 
       if (buttonValue === 'C') {
-        operation = '';
+        setOperation('');
         setValue('');
       } else if (buttonValue === '=') {
         if (!value) return;
@@ -47,12 +48,12 @@ export function Calculator() {
             const result = calcResult(operands);
             setColor('green');
             setValue(result + buttonValue);
-            operation = buttonValue;
+            setOperation(buttonValue)
 
             return;
           }
 
-          operation = buttonValue;
+          setOperation(buttonValue)
         }
         setColor('');
         setValue(value + buttonValue);
@@ -72,7 +73,7 @@ export function Calculator() {
         break;
     }
 
-    operation = '';
+    setOperation('');
 
     return result;
   }
