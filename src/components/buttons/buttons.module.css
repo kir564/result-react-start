@@ -1,0 +1,55 @@
+.buttons {
+  display: inline-grid;
+  grid-template-columns: 50px 50px 50px;
+  grid-template-rows: 50px 50px 50px;
+}
+
+.btn {
+  position: relative;
+}
+
+.zero {
+  position: absolute;
+}
+
+.zero::after {
+  content: ' ';
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  border: 2px solid black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cross {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cross::after,
+.cross::before {
+  content: '';
+  width: 27px;
+  height: 2px;
+  background-color: black;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, 0);
+}
+
+.cross::after {
+  transform: rotate(45deg);
+}
+
+.cross::before {
+  transform: rotate(-45deg);
+}
