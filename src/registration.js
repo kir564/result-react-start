@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Input } from './components';
@@ -25,14 +25,15 @@ function Registration() {
 
   const buttonSubmitRef = useRef();
 
-  if (isValid) {
-    buttonSubmitRef.current.disabled = false;
-    buttonSubmitRef.current.focus();
-  }
+  useEffect(() => {
+    if (isValid) {
+      buttonSubmitRef.current.focus();
+    }
 
-  if (isSubmitSuccessful) {
-    reset();
-  }
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  });
 
   return (
     <div className={styles.registration}>
@@ -58,7 +59,7 @@ function Registration() {
           errors={errors}
           register={register}
         />
-        <button disabled ref={buttonSubmitRef}>
+        <button disabled={!isValid} ref={buttonSubmitRef}>
           Зарегистрироваться
         </button>
       </form>
