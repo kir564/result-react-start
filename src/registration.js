@@ -6,8 +6,8 @@ import { initialUser, initialInputError, checkValidForm } from './utils';
 import { USER } from './constans';
 
 function Registration() {
-  const [user, setUser] = useState(initialUser());
-  const [inputError, setInputError] = useState(initialInputError());
+  const [user, setUser] = useState(() => initialUser());
+  const [inputError, setInputError] = useState(() => initialInputError());
   const submitButtonRef = useRef();
 
   const state = { user, setUser, inputError, setInputError };
