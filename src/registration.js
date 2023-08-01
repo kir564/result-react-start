@@ -33,7 +33,7 @@ function Registration() {
     if (isSubmitSuccessful) {
       reset();
     }
-  });
+  }, [isValid, isSubmitSuccessful]);
 
   return (
     <div className={styles.registration}>
