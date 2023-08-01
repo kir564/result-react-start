@@ -1,5 +1,5 @@
 import styles from './registration.module.css';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Input } from './components';
 import { handlerForm } from './handlers';
 import { initialUser, initialInputError, checkValidForm } from './utils';
@@ -11,11 +11,13 @@ function Registration() {
   const submitButtonRef = useRef();
 
   const state = { user, setUser, inputError, setInputError };
-
-  if (checkValidForm(user, inputError)) {
-    submitButtonRef.current.disabled = false;
-    submitButtonRef.current.focus();
-  }
+  
+  useEffect(() => {
+    if (checkValidForm(user, inputError)) {
+      submitButtonRef.current.focus();
+    }
+  }, [user, inputError])
+  
 
   return (
     <div className={styles.container}>
