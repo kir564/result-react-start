@@ -1,20 +1,24 @@
-import { useState, useEffect } from 'react';
-import { TaskList } from './components';
-import { BASE_URL } from './constants';
+import { useState } from 'react';
+import { useRequestGetTasks } from './hooks';
+import {
+  TaskList,
+  AddTask,
+  ChangeTaskModal,
+  SearchTask,
+  Sort,
+} from './components';
+import { filterTasks } from './utils';
 import styles from './todo.module.css';
 
 function Todo() {
-  const [tasks, setTasks] = useState([])
-  const [isLoading, setIsLoading] = useState(false);
+  const [refreshTodosFlag, setRefreshTodosFlag] = useState(false);
+  const [query, setQery] = useState('');
+  const [isSort, setIsSort] = useState(false);
+  const [isChangingTask, setIsChangingTask] = useState(false);
+  const [taskForChange, setTaskForChange] = useState({ id: '', title: '' });
 
-  useEffect(() => {
-    setIsLoading(true)
-    fetch(BASE_URL)
-      .then((response) => response.json())
-      .then((data) => setTasks(data))
-      .catch((error) => console.log('error-GET', error))
-      .finally(() => setIsLoading(false))
-  }, []);
+  const { tasks, isLoading } = useRequestGetTasks(refreshTodosFlag);
+  const tasksItems = filterTasks({ tasks, query, isSort });
 
   return (
     <div className={styles.todo}>
@@ -23,7 +27,39 @@ function Todo() {
           <div className={styles.loader}></div>
         </div>
       )}
-      <TaskList tasks={tasks}/>
+      <Sort isSort={isSort} setIsSort={setIsSort} />
+      <SearchTask
+        setQery={setQery}
+        tasks={tasks}
+        isChangingTask={isChangingTask}
+      />
+      {!query && (
+        <AddTask
+          refreshTodosFlag={refreshTodosFlag}
+          setRefreshTodosFlag={setRefreshTodosFlag}
+          isLoading={isLoading}
+        />
+      )}
+      {tasksItems.length !== 0 ? (
+        <TaskList
+          tasks={tasksItems}
+          setRefreshTodosFlag={setRefreshTodosFlag}
+          refreshTodosFlag={refreshTodosFlag}
+          isLoading={isLoading}
+          setIsChangingTask={setIsChangingTask}
+          setTaskForChange={setTaskForChange}
+        />
+      ) : (
+        <div className={styles.noTasks}>Задач не найдено</div>
+      )}
+      {isChangingTask && (
+        <ChangeTaskModal
+          setIsChangingTask={setIsChangingTask}
+          taskForChange={taskForChange}
+          refreshTodosFlag={refreshTodosFlag}
+          setRefreshTodosFlag={setRefreshTodosFlag}
+        />
+      )}
     </div>
   );
 }

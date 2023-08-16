@@ -1,11 +1,21 @@
 .tasks {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  gap: 10px;
+  width: 70%;
 }
 
 .task {
-    border: 1px solid blue;
-    border-radius: 5px;
-    padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: 1px solid blue;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.buttons {
+  display: flex;
+  gap: 5px;
 }

@@ -35,5 +35,7 @@
   }
 }
 
-
-
+.noTasks {
+  text-align: center;
+  color:red
+}
