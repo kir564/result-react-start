@@ -11,13 +11,12 @@ import { filterTasks } from './utils';
 import styles from './todo.module.css';
 
 function Todo() {
-  const [refreshTodosFlag, setRefreshTodosFlag] = useState(false);
   const [query, setQery] = useState('');
   const [isSort, setIsSort] = useState(false);
   const [isChangingTask, setIsChangingTask] = useState(false);
   const [taskForChange, setTaskForChange] = useState({ id: '', title: '' });
 
-  const { tasks, isLoading } = useRequestGetTasks(refreshTodosFlag);
+  const { tasks, isLoading } = useRequestGetTasks();
   const tasksItems = filterTasks({ tasks, query, isSort });
 
   return (
@@ -33,18 +32,10 @@ function Todo() {
         tasks={tasks}
         isChangingTask={isChangingTask}
       />
-      {!query && (
-        <AddTask
-          refreshTodosFlag={refreshTodosFlag}
-          setRefreshTodosFlag={setRefreshTodosFlag}
-          isLoading={isLoading}
-        />
-      )}
+      {!query && <AddTask isLoading={isLoading} />}
       {tasksItems.length !== 0 ? (
         <TaskList
           tasks={tasksItems}
-          setRefreshTodosFlag={setRefreshTodosFlag}
-          refreshTodosFlag={refreshTodosFlag}
           isLoading={isLoading}
           setIsChangingTask={setIsChangingTask}
           setTaskForChange={setTaskForChange}
@@ -56,8 +47,6 @@ function Todo() {
         <ChangeTaskModal
           setIsChangingTask={setIsChangingTask}
           taskForChange={taskForChange}
-          refreshTodosFlag={refreshTodosFlag}
-          setRefreshTodosFlag={setRefreshTodosFlag}
         />
       )}
     </div>

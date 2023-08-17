@@ -1,18 +1,24 @@
 import { useState, useEffect } from 'react';
-import { BASE_URL } from '../constants';
+import { TABLE_NAME } from '../constants';
+import { ref, onValue } from 'firebase/database';
+import { db } from '../firebase';
 
-export const useRequestGetTasks = (refreshTodosFlag) => {
-  const [tasks, setTasks] = useState([]);
+export const useRequestGetTasks = () => {
+  const [tasks, setTasks] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(BASE_URL)
-      .then((response) => response.json())
-      .then((data) => setTasks(data))
-      .catch((error) => console.log('error-GET', error))
-      .finally(() => setIsLoading(false));
-  }, [refreshTodosFlag]);
+
+    const tasksDbRef = ref(db, TABLE_NAME.TASKS);
+
+    return onValue(tasksDbRef, (snapshot) => {
+      const loadedTasks = snapshot.val() || {};
+
+      setTasks(loadedTasks);
+      setIsLoading(false);
+    });
+  }, []);
 
   return {
     tasks,

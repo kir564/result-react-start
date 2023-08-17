@@ -4,8 +4,6 @@ import { requestDeleteTask } from '../../handlers';
 export const TaskList = ({
   tasks,
   isLoading,
-  refreshTodosFlag,
-  setRefreshTodosFlag,
   setIsChangingTask,
   setTaskForChange,
 }) => {
@@ -28,9 +26,7 @@ export const TaskList = ({
             </button>
             <button
               disabled={isLoading}
-              onClick={() =>
-                requestDeleteTask({ id, refreshTodosFlag, setRefreshTodosFlag })
-              }
+              onClick={() => requestDeleteTask({ id })}
             >
               Удалить
             </button>

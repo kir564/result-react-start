@@ -1,23 +1,21 @@
-import { BASE_URL } from '../constants';
+import { ref, set } from 'firebase/database';
+import { db } from '../firebase';
+import { TABLE_NAME } from '../constants';
 
 export const requestChangeTask = ({
   event,
   taskForChange,
   value,
-  setRefreshTodosFlag,
-  refreshTodosFlag,
   setIsChangingTask,
 }) => {
   event.preventDefault();
-  setRefreshTodosFlag(!refreshTodosFlag);
+
   setIsChangingTask(false);
 
-  fetch(`${BASE_URL}/${taskForChange.id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json;charset=utf-8' },
-    body: JSON.stringify({
-      title: value,
-      comleted: false,
-    }),
-  }).catch((error) => console.log('error - PUT', error));
+  const taskDbRef = ref(db, `${TABLE_NAME.TASKS}/${taskForChange.id}`);
+
+  set(taskDbRef, {
+    title: value,
+    comleted: false,
+  }).catch((error) => console.log('error - SET', error));
 };

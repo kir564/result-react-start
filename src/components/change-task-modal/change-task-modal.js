@@ -2,12 +2,7 @@ import { useState } from 'react';
 import { requestChangeTask } from '../../handlers';
 import styles from './change-task-modal.module.css';
 
-export const ChangeTaskModal = ({
-  setIsChangingTask,
-  taskForChange,
-  refreshTodosFlag,
-  setRefreshTodosFlag,
-}) => {
+export const ChangeTaskModal = ({ setIsChangingTask, taskForChange }) => {
   const [value, setValue] = useState(taskForChange.title);
 
   return (
@@ -20,8 +15,6 @@ export const ChangeTaskModal = ({
               event,
               taskForChange,
               value,
-              refreshTodosFlag,
-              setRefreshTodosFlag,
               setIsChangingTask,
             })
           }

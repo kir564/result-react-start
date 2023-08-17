@@ -2,11 +2,7 @@ import { useState } from 'react';
 import { requestAddTask } from '../../handlers';
 import styles from './add-task.module.css';
 
-export const AddTask = ({
-  refreshTodosFlag,
-  setRefreshTodosFlag,
-  isLoading,
-}) => {
+export const AddTask = ({ isLoading }) => {
   const [newTask, setNewTask] = useState('');
   return (
     <form
@@ -14,8 +10,6 @@ export const AddTask = ({
       onSubmit={(event) =>
         requestAddTask({
           event,
-          refreshTodosFlag,
-          setRefreshTodosFlag,
           setNewTask,
           newTask,
         })

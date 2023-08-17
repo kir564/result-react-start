@@ -1,13 +1,8 @@
-import { BASE_URL } from '../constants';
+import { TABLE_NAME } from '../constants';
+import { ref, remove } from 'firebase/database';
+import { db } from '../firebase';
 
-export const requestDeleteTask = ({
-  id,
-  refreshTodosFlag,
-  setRefreshTodosFlag,
-}) => {
-  setRefreshTodosFlag(!refreshTodosFlag);
-
-  fetch(`${BASE_URL}/${id}`, {
-    method: 'DELETE',
-  }).catch((error) => console.log('error - DELETE', error));
+export const requestDeleteTask = ({ id }) => {
+  const taskDbRef = ref(db, `${TABLE_NAME.TASKS}/${id}`);
+  remove(taskDbRef).catch((error) => console.log('error - DELETE', error));
 };
