@@ -1,0 +1,9 @@
+.label {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.find {
+  flex-grow: 1;
+  padding: 5px;
+}

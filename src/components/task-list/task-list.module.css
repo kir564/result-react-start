@@ -1,0 +1,23 @@
+.tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.task {
+  border: 1px solid blue;
+  padding: 5px;
+  border-radius: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.notTasks {
+  color: red;
+}

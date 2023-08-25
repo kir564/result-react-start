@@ -1,0 +1,11 @@
+.nav {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.btn {
+  cursor: pointer;
+  width: 100%;
+}
