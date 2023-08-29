@@ -1,11 +1,7 @@
-import { useContext } from 'react';
 import { Task } from '../../components';
-import { AppContext } from '../../context';
 import styles from './task-list.module.css';
 
-export const TaskList = () => {
-  const { tasks } = useContext(AppContext);
-  
+export const TaskList = ({ tasks }) => {
   return (
     <div className={styles.tasks}>
       {tasks.map((task) => (

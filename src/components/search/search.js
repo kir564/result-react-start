@@ -1,18 +1,15 @@
-import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../../context';
+import { useEffect, useState } from 'react';
 import styles from './search.module.css';
 
-export const Search = () => {
+export const Search = ({ setPhrase }) => {
   const [searchPhrase, setSearchPhrase] = useState('');
 
-  const { setPhrase } = useContext(AppContext)
-  
   useEffect(() => {
     const timeout = setTimeout(() => {
-        setPhrase(searchPhrase)
+      setPhrase(searchPhrase);
     }, 500);
 
-    return () => clearTimeout(timeout)
+    return () => clearTimeout(timeout);
   });
 
   return (
