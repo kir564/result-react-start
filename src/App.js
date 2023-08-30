@@ -4,24 +4,25 @@ import { AddTask, Search, TaskList } from './components';
 import { AppContext } from './context';
 import styles from './app.module.css';
 
-const filterTasks = (tasks, searchPhrase) =>
-  tasks.filter((task) =>
-    task.title.toLowerCase().includes(searchPhrase.toLowerCase().trim())
-  );
-
 function App() {
   const [updateFlag, setUpdateFlag] = useState(false);
+  const [isSort, setIsSort] = useState(false);
   const [phrase, setPhrase] = useState('');
 
-  const { tasks } = useRequestTasks(updateFlag);
-  const tasksFiltered = filterTasks(tasks, phrase);
+  const { tasks } = useRequestTasks(updateFlag, isSort, phrase);
 
   return (
     <AppContext.Provider value={{ setUpdateFlag }}>
       <div className={styles.app}>
+        <button
+          className={styles.sort}
+          onClick={() => setIsSort((prev) => !prev)}
+        >
+          Сортировать по {isSort ? 'добавлению' : 'алфавиту'}
+        </button>
         <Search setPhrase={setPhrase} />
         <AddTask />
-        <TaskList tasks={tasksFiltered} />
+        <TaskList tasks={tasks} />
       </div>
     </AppContext.Provider>
   );
