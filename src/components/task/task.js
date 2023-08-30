@@ -1,14 +1,15 @@
 import { useContext, useState } from 'react';
 import { ACTION } from '../../constans';
 import { AppContext } from '../../context';
+import { useInput } from '../../hooks';
 import { requestChangeTasks } from '../../requests';
 import styles from './task.module.css';
 
 export const Task = ({ task }) => {
   const [isChanging, setIsChanging] = useState(false);
   const [isDone, setIsDone] = useState(task.completed);
-  const [changeTask, setChangeTask] = useState(task.title);
   const { setUpdateFlag } = useContext(AppContext);
+  const changeTask = useInput(task.title)
 
   const handleCancel = () => {
     setIsChanging(false);
@@ -20,7 +21,7 @@ export const Task = ({ task }) => {
       setIsChanging(false);
       requestChangeTasks(
         ACTION.CHANGE,
-        { ...task, title: changeTask },
+        { ...task, title: changeTask.value },
         setUpdateFlag
       );
     }
@@ -51,8 +52,7 @@ export const Task = ({ task }) => {
         {isChanging ? (
           <input
             autoFocus={true}
-            value={changeTask}
-            onChange={({ target }) => setChangeTask(target.value)}
+            {...changeTask.bind}
           />
         ) : (
           <span>{task.title}</span>

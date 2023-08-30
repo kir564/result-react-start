@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useInput } from '../../hooks';
 import styles from './search.module.css';
 
 export const Search = ({ setPhrase }) => {
-  const [searchPhrase, setSearchPhrase] = useState('');
+  const phrase = useInput('');
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setPhrase(searchPhrase);
+      setPhrase(phrase.value);
     }, 500);
 
     return () => clearTimeout(timeout);
@@ -15,10 +16,10 @@ export const Search = ({ setPhrase }) => {
   return (
     <div className={styles.search}>
       <input
+        autoFocus={true}
         className={styles.input}
         placeholder='search'
-        value={searchPhrase}
-        onChange={({ target }) => setSearchPhrase(target.value)}
+        {...phrase.bind}
       />
     </div>
   );
