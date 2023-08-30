@@ -8,7 +8,9 @@ export const AddTask = () => {
   const [newTask, setNewTask] = useState('');
   const { setUpdateFlag } = useContext(AppContext);
 
-  const handleAdd = () => {
+  const handleAdd = (event) => {
+    event.preventDefault();
+    setNewTask('');
     requestChangeTasks(
       ACTION.ADD,
       { title: newTask, completed: false },
@@ -17,14 +19,14 @@ export const AddTask = () => {
   };
 
   return (
-    <div className={styles.add}>
+    <form className={styles.add} onSubmit={handleAdd}>
       <input
         className={styles.input}
         placeholder='new task'
         value={newTask}
         onChange={({ target }) => setNewTask(target.value)}
       />
-      <button onClick={handleAdd}>add</button>
-    </div>
+      <button>add</button>
+    </form>
   );
 };

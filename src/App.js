@@ -9,7 +9,13 @@ function App() {
   const [isSort, setIsSort] = useState(false);
   const [phrase, setPhrase] = useState('');
 
-  const { tasks } = useRequestTasks(updateFlag, isSort, phrase);
+  const { tasks, isError } = useRequestTasks(updateFlag, isSort, phrase);
+
+  if (isError) {
+    return (
+      <h3 style={{ color: 'red' }}>Ошибка при загрузке. Обновите страницу</h3>
+    );
+  }
 
   return (
     <AppContext.Provider value={{ setUpdateFlag }}>
