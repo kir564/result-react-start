@@ -1,0 +1,24 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "go to the shop",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "title": "read the book",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "title": "learn react",
+      "completed": false
+    },
+    {
+      "title": "new task changing",
+      "completed": true,
+      "id": 4
+    }
+  ]
+}

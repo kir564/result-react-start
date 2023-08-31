@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { useRequestTasks } from './hooks';
+import { AddTask, Search, TaskList } from './components';
+import { AppContext } from './context';
+import styles from './app.module.css';
 
 function App() {
+  const [updateFlag, setUpdateFlag] = useState(false);
+  const [isSort, setIsSort] = useState(false);
+  const [phrase, setPhrase] = useState('');
+
+  const { tasks, isError, isLoading, setIsLoading } = useRequestTasks(
+    updateFlag,
+    isSort,
+    phrase
+  );
+
+  if (isError) {
+    return (
+      <h3 style={{ color: 'red' }}>Ошибка при загрузке. Обновите страницу</h3>
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <AppContext.Provider value={{ setUpdateFlag, isLoading, setIsLoading }}>
+      <div className={styles.app}>
+        <button
+          disabled={isLoading}
+          className={styles.sort}
+          onClick={() => setIsSort((prev) => !prev)}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          Сортировать по {isSort ? 'добавлению' : 'алфавиту'}
+        </button>
+        <Search setPhrase={setPhrase} />
+        <AddTask />
+        {isLoading && tasks.length === 0 ? (
+          <h3>Load...</h3>
+        ) : (
+          <TaskList tasks={tasks} />
+        )}
+      </div>
+    </AppContext.Provider>
   );
 }
 

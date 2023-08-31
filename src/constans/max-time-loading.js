@@ -1,0 +1,1 @@
+export const MAX_TIME_LOADING = 5000
