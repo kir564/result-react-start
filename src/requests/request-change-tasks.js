@@ -1,9 +1,14 @@
-import { ACTION, BASE_URL } from '../constans';
+import { ACTION, BASE_URL, PATH } from '../constans';
 
-export const requestChangeTasks = (action, task, setUpdateFlag, setIsLoading) => {
-  let url = '';
+export const requestChangeTasks = (
+  action,
+  task,
+  setUpdateFlag,
+  setIsLoading
+) => {
+  const url = new URL(BASE_URL);
   let params = {};
-  setIsLoading(true)
+  setIsLoading(true);
 
   const getParams = (method) => ({
     method: method,
@@ -15,17 +20,17 @@ export const requestChangeTasks = (action, task, setUpdateFlag, setIsLoading) =>
 
   switch (action) {
     case ACTION.ADD:
-      url = BASE_URL;
+      url.pathname = PATH.TASKS;
       params = getParams('POST');
       break;
 
     case ACTION.CHANGE:
-      url = `${BASE_URL}/${task.id}`;
+      url.pathname = PATH.TASKS + task.id;
       params = getParams('PUT');
       break;
 
     case ACTION.DELETE:
-      url = `${BASE_URL}/${task.id}`;
+      url.pathname = PATH.TASKS + task.id;
       params = {
         method: 'DELETE',
       };
@@ -37,8 +42,8 @@ export const requestChangeTasks = (action, task, setUpdateFlag, setIsLoading) =>
 
   fetch(url, params)
     .then(() => {
-        setUpdateFlag((prev) => !prev)
-        setIsLoading(false)
+      setUpdateFlag((prev) => !prev);
+      setIsLoading(false);
     })
     .catch((err) => console.log(err));
 };

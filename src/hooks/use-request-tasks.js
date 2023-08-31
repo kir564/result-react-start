@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
-import { BASE_URL, MAX_TIME_LOADING } from '../constans';
+import { BASE_URL, MAX_TIME_LOADING, PATH } from '../constans';
 
 export const useRequestTasks = (updateFlag, isSort, phrase) => {
   const [tasks, setTasks] = useState([]);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const sortParams = isSort ? '_sort=title&_order=asc' : '_sort=id&_order=desc';
+  const url = new URL(PATH.TASKS, BASE_URL);
+  url.searchParams.set('_sort', isSort ? 'title' : 'id');
+  url.searchParams.set('_order', isSort ? 'asc' : 'desc');
+  url.searchParams.set('title_like', phrase);
 
   useEffect(() => {
     setIsLoading(true);
@@ -16,7 +19,7 @@ export const useRequestTasks = (updateFlag, isSort, phrase) => {
       isLoadingTimeout = true;
     }, MAX_TIME_LOADING);
 
-    fetch(`${BASE_URL}?${sortParams}&title_like=${phrase}`)
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         if (!isLoadingTimeout) {

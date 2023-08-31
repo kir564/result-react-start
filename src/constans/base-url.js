@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://localhost:3010/tasks'
+export const BASE_URL = 'http://localhost:3010'
