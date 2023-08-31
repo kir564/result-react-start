@@ -15,7 +15,8 @@ export const Task = ({ task }) => {
     setIsChanging(false);
   };
 
-  const handleChange = () => {
+  const handleChange = (event) => {
+    event.preventDefault();
     setIsChanging(true);
     if (isChanging) {
       setIsChanging(false);
@@ -52,7 +53,9 @@ export const Task = ({ task }) => {
           onChange={({ target }) => handleDone(target)}
         />
         {isChanging ? (
-          <input autoFocus={true} {...changeTask.bind} />
+          <form onSubmit={handleChange}>
+            <input autoFocus={true} {...changeTask.bind} />
+          </form>
         ) : (
           <span>{task.title}</span>
         )}
