@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { ACTION } from '../../constans';
 import { AppContext } from '../../context';
 import { useInput } from '../../hooks';
@@ -7,16 +7,17 @@ import styles from './add-task.module.css';
 
 export const AddTask = () => {
   const newTask = useInput('');
-  const { setUpdateFlag } = useContext(AppContext);
+  const { setUpdateFlag, isLoading, setIsLoading } = useContext(AppContext);
 
   const handleAdd = (event) => {
     event.preventDefault();
     newTask.clearField();
-    
+
     requestChangeTasks(
       ACTION.ADD,
       { title: newTask.value, completed: false },
-      setUpdateFlag
+      setUpdateFlag,
+      setIsLoading
     );
   };
 
@@ -27,7 +28,7 @@ export const AddTask = () => {
         placeholder='new task'
         {...newTask.bind}
       />
-      <button>add</button>
+      <button disabled={isLoading}>add</button>
     </form>
   );
 };

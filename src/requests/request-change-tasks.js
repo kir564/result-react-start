@@ -1,8 +1,9 @@
 import { ACTION, BASE_URL } from '../constans';
 
-export const requestChangeTasks = (action, task, setUpdateFlag) => {
+export const requestChangeTasks = (action, task, setUpdateFlag, setIsLoading) => {
   let url = '';
   let params = {};
+  setIsLoading(true)
 
   const getParams = (method) => ({
     method: method,
@@ -35,6 +36,9 @@ export const requestChangeTasks = (action, task, setUpdateFlag) => {
   }
 
   fetch(url, params)
-    .then(() => setUpdateFlag((prev) => !prev))
+    .then(() => {
+        setUpdateFlag((prev) => !prev)
+        setIsLoading(false)
+    })
     .catch((err) => console.log(err));
 };

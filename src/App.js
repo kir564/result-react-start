@@ -9,7 +9,11 @@ function App() {
   const [isSort, setIsSort] = useState(false);
   const [phrase, setPhrase] = useState('');
 
-  const { tasks, isError } = useRequestTasks(updateFlag, isSort, phrase);
+  const { tasks, isError, isLoading, setIsLoading } = useRequestTasks(
+    updateFlag,
+    isSort,
+    phrase
+  );
 
   if (isError) {
     return (
@@ -18,9 +22,10 @@ function App() {
   }
 
   return (
-    <AppContext.Provider value={{ setUpdateFlag }}>
+    <AppContext.Provider value={{ setUpdateFlag, isLoading, setIsLoading }}>
       <div className={styles.app}>
         <button
+          disabled={isLoading}
           className={styles.sort}
           onClick={() => setIsSort((prev) => !prev)}
         >
@@ -28,7 +33,11 @@ function App() {
         </button>
         <Search setPhrase={setPhrase} />
         <AddTask />
-        <TaskList tasks={tasks} />
+        {isLoading && tasks.length === 0 ? (
+          <h3>Load...</h3>
+        ) : (
+          <TaskList tasks={tasks} />
+        )}
       </div>
     </AppContext.Provider>
   );

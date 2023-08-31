@@ -8,8 +8,8 @@ import styles from './task.module.css';
 export const Task = ({ task }) => {
   const [isChanging, setIsChanging] = useState(false);
   const [isDone, setIsDone] = useState(task.completed);
-  const { setUpdateFlag } = useContext(AppContext);
-  const changeTask = useInput(task.title)
+  const { setUpdateFlag, setIsLoading, isLoading } = useContext(AppContext);
+  const changeTask = useInput(task.title);
 
   const handleCancel = () => {
     setIsChanging(false);
@@ -22,7 +22,8 @@ export const Task = ({ task }) => {
       requestChangeTasks(
         ACTION.CHANGE,
         { ...task, title: changeTask.value },
-        setUpdateFlag
+        setUpdateFlag,
+        setIsLoading
       );
     }
   };
@@ -32,12 +33,13 @@ export const Task = ({ task }) => {
     requestChangeTasks(
       ACTION.CHANGE,
       { ...task, completed: target.checked },
-      setUpdateFlag
+      setUpdateFlag,
+      setIsLoading
     );
   };
 
   const handleDelete = () => {
-    requestChangeTasks(ACTION.DELETE, task, setUpdateFlag);
+    requestChangeTasks(ACTION.DELETE, task, setUpdateFlag, setIsLoading);
   };
 
   return (
@@ -50,20 +52,21 @@ export const Task = ({ task }) => {
           onChange={({ target }) => handleDone(target)}
         />
         {isChanging ? (
-          <input
-            autoFocus={true}
-            {...changeTask.bind}
-          />
+          <input autoFocus={true} {...changeTask.bind} />
         ) : (
           <span>{task.title}</span>
         )}
       </div>
       <div className={styles.buttons}>
-        <button onClick={handleChange}>change</button>
+        <button disabled={isLoading} onClick={handleChange}>
+          change
+        </button>
         {isChanging ? (
           <button onClick={handleCancel}>cancel</button>
         ) : (
-          <button onClick={handleDelete}>delete</button>
+          <button disabled={isLoading} onClick={handleDelete}>
+            delete
+          </button>
         )}
       </div>
     </div>
