@@ -1,9 +1,13 @@
-import { store } from '../store';
-import { STATUS, STORE_ACTION, PLAYER } from '../constants';
+import {
+  changePlayerAction,
+  changeStatusAction,
+  clickCellAction,
+} from '../actions';
+import { STATUS, PLAYER } from '../constants';
 import { checkWin, checkEmptyCells } from '../utils';
 
-export const handleCell = (index) => {
-  const { status, currentPlayer, field } = store.getState();
+export const handleCell = (index, state, dispatch) => {
+  const { status, currentPlayer, field } = state;
 
   if (
     status === STATUS.WIN ||
@@ -15,29 +19,23 @@ export const handleCell = (index) => {
 
   const newField = [...field];
   newField[index] = currentPlayer;
-  store.dispatch({ type: STORE_ACTION.CLICK_CELL, field: newField });
+  dispatch(clickCellAction(newField));
 
   if (checkWin(newField, currentPlayer)) {
-    store.dispatch({ type: STORE_ACTION.CHANGE_STATUS, status: STATUS.WIN });
+    dispatch(changeStatusAction(STATUS.WIN));
     return;
   }
 
   if (!checkEmptyCells(newField)) {
-    store.dispatch({ type: STORE_ACTION.CHANGE_STATUS, status: STATUS.DRAW });
+    dispatch(changeStatusAction(STATUS.DRAW));
     return;
   }
 
   if (currentPlayer === PLAYER.CROSS) {
-    store.dispatch({
-      type: STORE_ACTION.CHANGE_PLAYER,
-      currentPlayer: PLAYER.NOUGHT,
-    });
+    dispatch(changePlayerAction(PLAYER.NOUGHT));
   }
 
   if (currentPlayer === PLAYER.NOUGHT) {
-    store.dispatch({
-      type: STORE_ACTION.CHANGE_PLAYER,
-      currentPlayer: PLAYER.CROSS,
-    });
+    dispatch(changePlayerAction(PLAYER.CROSS));
   }
 };

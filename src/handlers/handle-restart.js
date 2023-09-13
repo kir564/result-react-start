@@ -1,11 +1,5 @@
-import { store, initialState } from '../store';
-import { STORE_ACTION } from '../constants';
+import { restartAction } from '../actions';
 
-export const handleRestart = () => {
-  store.dispatch({
-    type: STORE_ACTION.RESTART,
-    payload: {
-      ...initialState,
-    },
-  });
+export const handleRestart = (dispatch) => {
+  dispatch(restartAction());
 };

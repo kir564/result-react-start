@@ -1,6 +1,13 @@
-import { STORE_ACTION } from '../constants';
+import { STORE_ACTION, STATUS, PLAYER } from '../constants';
+import { getInitialsField } from '../utils';
 
-export const reduser = (state, action) => {
+export const initialState = {
+  status: STATUS.GO,
+  currentPlayer: PLAYER.CROSS,
+  field: getInitialsField(),
+};
+
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case STORE_ACTION.CLICK_CELL:
       return { ...state, field: action.field };
