@@ -1,7 +1,11 @@
+import { useSelector} from 'react-redux'
 import { Task } from '../../components';
+import { tasksSelector } from '../../selectors';
 import styles from './task-list.module.css';
 
-export const TaskList = ({ tasks }) => {
+export const TaskList = () => {
+  const tasks = useSelector(tasksSelector)
+  
   return (
     <div className={styles.tasks}>
       {tasks.length === 0 ? (

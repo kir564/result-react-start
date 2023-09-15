@@ -1,0 +1,1 @@
+export const sortSelector = (state) => state.params.sort_by

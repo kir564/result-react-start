@@ -1,4 +1,6 @@
 import { useContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { changeTaskAction, deleteTaskAction } from '../../actions';
 import { ACTION } from '../../constans';
 import { AppContext } from '../../context';
 import { useInput } from '../../hooks';
@@ -8,8 +10,12 @@ import styles from './task.module.css';
 export const Task = ({ task }) => {
   const [isChanging, setIsChanging] = useState(false);
   const [isDone, setIsDone] = useState(task.completed);
-  const { setUpdateFlag, setIsLoading, isLoading } = useContext(AppContext);
+
+  // const { setUpdateFlag, setIsLoading, isLoading } = useContext(AppContext);
+  let isLoading = false
   const changeTask = useInput(task.title);
+
+  const dispatch = useDispatch();
 
   const handleCancel = () => {
     setIsChanging(false);
@@ -20,34 +26,34 @@ export const Task = ({ task }) => {
     setIsChanging(true);
     if (isChanging) {
       setIsChanging(false);
-      requestChangeTasks(
-        ACTION.CHANGE,
-        { ...task, title: changeTask.value },
-        setUpdateFlag,
-        setIsLoading
+      dispatch(
+        changeTaskAction({
+          ...task,
+          title: changeTask.value,
+        })
       );
     }
   };
 
   const handleDone = (target) => {
     setIsDone(target.checked);
-    requestChangeTasks(
-      ACTION.CHANGE,
-      { ...task, completed: target.checked },
-      setUpdateFlag,
-      setIsLoading
+    dispatch( 
+      changeTaskAction({
+        ...task,
+        completed: target.checked,
+      })
     );
   };
 
   const handleDelete = () => {
-    requestChangeTasks(ACTION.DELETE, task, setUpdateFlag, setIsLoading);
+    dispatch(deleteTaskAction(task));
   };
 
   return (
     <div className={styles.task}>
       <div className={styles.title}>
         <input
-          checked={task.completed}
+          checked={isDone}
           type='checkbox'
           value={isDone}
           onChange={({ target }) => handleDone(target)}
