@@ -16,19 +16,9 @@
       "completed": false
     },
     {
-      "title": "new task changing",
+      "title": "new task change",
       "completed": true,
       "id": 4
-    },
-    {
-      "title": "222 change",
-      "completed": true,
-      "id": 6
-    },
-    {
-      "title": "wwwchange",
-      "completed": false,
-      "id": 7
     }
   ]
 }

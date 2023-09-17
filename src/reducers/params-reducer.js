@@ -1,26 +1,24 @@
-import { ACTION, SORT_BY } from "../constans"
+import { ACTION } from '../constans';
 
 const initialParams = {
-    sort_by: false,
-    search_phrase: ''
-}
+  sort_by: false,
+  search_phrase: '',
+};
 
 export const paramsReducer = (state = initialParams, action) => {
-    // console.log('action-paramsReducer: ', action);
-    switch (action.type) {
-        case  ACTION.SET_SORT:
+  switch (action.type) {
+    case ACTION.SET_SORT:
+      return {
+        ...state,
+        sort_by: action.payload.params.sort_by,
+      };
 
-            return {
-                ...state,
-                sort_by: !state.sort_by
-            }
-
-        case ACTION.SET_SEARCH_PHRASE:
-            return {
-                ...state,
-                search_phrase: action.payload
-            }
-        default:
-            return state
-    }
-}
+    case ACTION.SET_SEARCH_PHRASE:
+      return {
+        ...state,
+        search_phrase: action.payload.params.search_phrase,
+      };
+    default:
+      return state;
+  }
+};

@@ -1,27 +1,31 @@
-import { useContext, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeTaskAction, deleteTaskAction } from '../../actions';
-import { ACTION } from '../../constans';
-import { AppContext } from '../../context';
 import { useInput } from '../../hooks';
-import { requestChangeTasks } from '../../requests';
+import { taskLoadingSelector } from '../../selectors';
 import styles from './task.module.css';
 
 export const Task = ({ task }) => {
   const [isChanging, setIsChanging] = useState(false);
   const [isDone, setIsDone] = useState(task.completed);
 
-  // const { setUpdateFlag, setIsLoading, isLoading } = useContext(AppContext);
-  let isLoading = false
+  const isLoading = useSelector(taskLoadingSelector);
   const changeTask = useInput(task.title);
 
   const dispatch = useDispatch();
 
   const handleCancel = () => {
+    if (isLoading) {
+      return;
+    }
     setIsChanging(false);
   };
 
   const handleChange = (event) => {
+    if (isLoading) {
+      return;
+    }
+
     event.preventDefault();
     setIsChanging(true);
     if (isChanging) {
@@ -36,8 +40,11 @@ export const Task = ({ task }) => {
   };
 
   const handleDone = (target) => {
+    if (isLoading) {
+      return;
+    }
     setIsDone(target.checked);
-    dispatch( 
+    dispatch(
       changeTaskAction({
         ...task,
         completed: target.checked,
@@ -46,6 +53,9 @@ export const Task = ({ task }) => {
   };
 
   const handleDelete = () => {
+    if (isLoading) {
+      return;
+    }
     dispatch(deleteTaskAction(task));
   };
 
@@ -67,15 +77,11 @@ export const Task = ({ task }) => {
         )}
       </div>
       <div className={styles.buttons}>
-        <button disabled={isLoading} onClick={handleChange}>
-          change
-        </button>
+        <button onClick={handleChange}>change</button>
         {isChanging ? (
           <button onClick={handleCancel}>cancel</button>
         ) : (
-          <button disabled={isLoading} onClick={handleDelete}>
-            delete
-          </button>
+          <button onClick={handleDelete}>delete</button>
         )}
       </div>
     </div>

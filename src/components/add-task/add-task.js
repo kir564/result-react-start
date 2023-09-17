@@ -1,24 +1,24 @@
-import { useContext, useState } from 'react';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
 import { addTaskAction } from '../../actions';
-import { ACTION } from '../../constans';
-import { AppContext } from '../../context';
+import { tasksLoadingSelector, taskLoadingSelector } from '../../selectors';
 import { useInput } from '../../hooks';
-import { requestChangeTasks } from '../../requests';
 import styles from './add-task.module.css';
 
 export const AddTask = () => {
   const newTask = useInput('');
-  // const { setUpdateFlag, isLoading, setIsLoading } = useContext(AppContext);
-  const dispatch = useDispatch()
-
-  let isLoading = false
-
+  const dispatch = useDispatch();
+  const isLoadingTasks = useSelector(tasksLoadingSelector);
+  const isLoadingTask = useSelector(taskLoadingSelector);
 
   const handleAdd = (event) => {
     event.preventDefault();
+
+    if (isLoadingTasks || isLoadingTask) {
+      return;
+    }
+
     newTask.clearField();
-    dispatch(addTaskAction({title: newTask.value, completed: false}))
+    dispatch(addTaskAction({ title: newTask.value, completed: false }));
   };
 
   return (
@@ -28,7 +28,7 @@ export const AddTask = () => {
         placeholder='new task'
         {...newTask.bind}
       />
-      <button disabled={isLoading}>add</button>
+      <button>add</button>
     </form>
   );
 };

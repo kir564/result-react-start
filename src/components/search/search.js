@@ -1,25 +1,26 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux'
-import { getTasksAction } from '../../actions';
-import { setSearchPhraseAction } from '../../actions/set-search-phrase-action';
-import { useInput } from '../../hooks';
+import { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { debounce } from '../../utils';
+import { setSearchPhraseAction } from '../../actions';
+import { DELAY_SEARCH } from '../../constans';
 import styles from './search.module.css';
 
 export const Search = () => {
-  const phrase = useInput('');
-  // console.log('phrase: ', phrase.value);
+  const [phrase, setPhrase] = useState('');
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
+  const searchPhrase = (value) => {
+    dispatch(setSearchPhraseAction(value));
+  };
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      dispatch(setSearchPhraseAction(phrase.value))
-      dispatch(getTasksAction())
-      // setPhrase(phrase.value);
-    }, 500);
+  const searchPhraseDebounse = useRef(
+    debounce(searchPhrase, DELAY_SEARCH)
+  ).current;
 
-    return () => clearTimeout(timeout);
-  },[phrase.value]);
+  const onChange = (event) => {
+    setPhrase(event.target.value);
+    searchPhraseDebounse(event.target.value);
+  };
 
   return (
     <div className={styles.search}>
@@ -27,7 +28,8 @@ export const Search = () => {
         autoFocus={true}
         className={styles.input}
         placeholder='search'
-        {...phrase.bind}
+        value={phrase}
+        onChange={onChange}
       />
     </div>
   );

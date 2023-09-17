@@ -1,28 +1,27 @@
-import { useState } from 'react';
-import {useDispatch, useSelector} from 'react-redux'
-import {setSortAction, getTasksAction} from '../../actions'
-import { sortSelector } from '../../selectors';
-import styles from './sort.module.css'
+import { useDispatch, useSelector } from 'react-redux';
+import { setSortAction } from '../../actions';
+import {
+  sortSelector,
+  taskLoadingSelector,
+  tasksLoadingSelector,
+} from '../../selectors';
+import styles from './sort.module.css';
 
 export const Sort = () => {
-    // const [sortParams, setSortParams] = useState(false)
-    const dispatch = useDispatch()
-    const sort_by = useSelector(sortSelector)
-    let isLoading
+  const dispatch = useDispatch();
+  const sort_by = useSelector(sortSelector);
+  const isLoadingTasks = useSelector(tasksLoadingSelector);
+  const isLoadingTask = useSelector(taskLoadingSelector);
 
-    const handleSort = () => {
-        dispatch(setSortAction())
-        dispatch(getTasksAction())
-    
-        // dispatch(sortAc())
-      }
+  const handleSort = () => {
+    if (isLoadingTasks || isLoadingTask) {
+      return;
+    }
+    dispatch(setSortAction(!sort_by));
+  };
+
   return (
-    <button
-      disabled={isLoading}
-      className={styles.sort}
-      onClick={handleSort}
-      // onClick={() => setIsSort((prev) => !prev)}
-    >
+    <button className={styles.sort} onClick={handleSort}>
       Сортировать по {sort_by ? 'умолчанию' : 'алфавиту'}
     </button>
   );
