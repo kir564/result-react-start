@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { useSelector } from 'react-redux';
+import { AddTask, Search, Sort, TaskList } from './components';
+import { errorSelector } from './selectors';
+import styles from './app.module.css';
 
 function App() {
+  const isError = useSelector(errorSelector);
+
+  if (isError) {
+    return (
+      <h3 style={{ color: 'red' }}>Ошибка при загрузке. Обновите страницу</h3>
+    );
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={styles.app}>
+      <Sort />
+      <Search />
+      <AddTask />
+      <TaskList />
     </div>
   );
 }
