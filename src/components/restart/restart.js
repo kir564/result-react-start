@@ -1,8 +1,9 @@
 import { Component } from 'react';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
+import { restartAction } from '../../actions';
 import { STATUS } from '../../constants';
-import { handleRestart } from '../../handlers';
-export class Restart extends Component {
+
+export class RestartContainer extends Component {
   constructor(props) {
     super(props);
   }
@@ -13,8 +14,8 @@ export class Restart extends Component {
 
     return (
       <button
-        className={`button pl-3 pr-3 bg-neutral-300 ${
-          isValid && 'bg-green-300'
+        className={`button pl-3 pr-3  ${
+          isValid ? 'bg-green-300' : 'bg-neutral-300'
         }`}
         onClick={this.props.restart}
       >
@@ -23,3 +24,16 @@ export class Restart extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  status: state.status,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  restart: () => dispatch(restartAction()),
+});
+
+export const Restart = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RestartContainer);

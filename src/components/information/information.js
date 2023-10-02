@@ -1,9 +1,8 @@
 import { Component } from 'react';
-import { useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { STATUS, PLAYER_NAME, PLAYER_ACTION } from '../../constants';
-import { statusSelector, currentPlayerSelector } from '../../selectors';
 
-export class Information extends Component {
+export class InformationContainer extends Component {
   constructor(props) {
     super(props);
   }
@@ -15,6 +14,13 @@ export class Information extends Component {
         : `${PLAYER_ACTION[this.props.status]} ${
             PLAYER_NAME[this.props.currentPlayer]
           }`;
-    return <h3 className='text-2xl' >{info}</h3>;
+    return <h3 className='text-2xl'>{info}</h3>;
   }
 }
+
+const mapStateToProps = (state) => ({
+  status: state.status,
+  currentPlayer: state.currentPlayer,
+});
+
+export const Information = connect(mapStateToProps)(InformationContainer);

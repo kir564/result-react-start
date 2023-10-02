@@ -1,12 +1,14 @@
 import { Component } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fieldSelector } from '../../selectors';
-import { store } from '../../store';
+import { connect } from 'react-redux';
 import { CELL_CONTENT, PLAYER, STATUS, KEY } from '../../constants';
 import { checkEmptyCells, checkWin } from '../../utils';
+import {
+  changePlayerAction,
+  changeStatusAction,
+  clickCellAction,
+} from '../../actions';
 
-
-export class Field extends Component {
+export class FieldContainer extends Component {
   constructor(props) {
     super(props);
   }
@@ -22,24 +24,24 @@ export class Field extends Component {
 
     const newField = [...this.props.field];
     newField[index] = this.props.currentPlayer;
-    this.props.changeState(KEY.FIELD, newField);
+    this.props.dispatch(clickCellAction(newField));
 
     if (checkWin(newField, this.props.currentPlayer)) {
-      this.props.changeState(KEY.STATUS, STATUS.WIN);
+      this.props.dispatch(changeStatusAction(STATUS.WIN));
       return;
     }
 
     if (!checkEmptyCells(newField)) {
-      this.props.changeState(KEY.STATUS, STATUS.DRAW);
+      this.props.dispatch(changeStatusAction(STATUS.DRAW));
       return;
     }
 
     if (this.props.currentPlayer === PLAYER.CROSS) {
-      this.props.changeState(KEY.CURRENT_PLAYER, PLAYER.NOUGHT);
+      this.props.dispatch(changePlayerAction(PLAYER.NOUGHT));
     }
 
     if (this.props.currentPlayer === PLAYER.NOUGHT) {
-      this.props.changeState(KEY.CURRENT_PLAYER, PLAYER.CROSS);
+      this.props.dispatch(changePlayerAction(PLAYER.CROSS));
     }
   }
 
@@ -61,3 +63,11 @@ export class Field extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  status: state.status,
+  currentPlayer: state.currentPlayer,
+  field: state.field,
+});
+
+export const Field = connect(mapStateToProps)(FieldContainer);
