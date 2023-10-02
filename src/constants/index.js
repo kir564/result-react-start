@@ -5,3 +5,4 @@ export * from './cell-content';
 export * from './player-action';
 export * from './patterns';
 export * from './store-action';
+export * from './key';

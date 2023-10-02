@@ -1,10 +1,12 @@
+import { Component } from 'react';
 import { useDispatch } from 'react-redux';
 import { handleRestart } from '../../handlers';
+export class Restart extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-export const Restart = () => {
-  const dispatch = useDispatch();
-  const onClick = () => {
-    handleRestart(dispatch);
-  };
-  return <button onClick={onClick}>Начать заново</button>;
-};
+  render() {
+    return <button onClick={this.props.restart}>Начать заново</button>;
+  }
+}

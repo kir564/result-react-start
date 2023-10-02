@@ -1,28 +1,63 @@
+import { Component } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fieldSelector } from '../../selectors';
 import { store } from '../../store';
-import { handleCell } from '../../handlers';
-import { CELL_CONTENT } from '../../constants';
+import { CELL_CONTENT, PLAYER, STATUS, KEY } from '../../constants';
+import { checkEmptyCells, checkWin } from '../../utils';
 import styles from './field.module.css';
 
-export const Field = () => {
-  const field = useSelector(fieldSelector);
-  const dispatch = useDispatch();
-  const state = store.getState();
+export class Field extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-  return (
-    <div className={styles.field}>
-      {field.map((cellPlayer, index) => (
-        <button
-          key={index}
-          className={styles.cell}
-          onClick={() => {
-            handleCell(index, state, dispatch);
-          }}
-        >
-          {CELL_CONTENT[cellPlayer]}
-        </button>
-      ))}
-    </div>
-  );
-};
+  handleCell(index) {
+    if (
+      this.props.status === STATUS.WIN ||
+      this.props.status === STATUS.DRAW ||
+      this.props.field[index] !== PLAYER.NOBODY
+    ) {
+      return;
+    }
+
+    const newField = [...this.props.field];
+    newField[index] = this.props.currentPlayer;
+    this.props.changeState(KEY.FIELD, newField);
+
+    if (checkWin(newField, this.props.currentPlayer)) {
+      this.props.changeState(KEY.STATUS, STATUS.WIN);
+      return;
+    }
+
+    if (!checkEmptyCells(newField)) {
+      this.props.changeState(KEY.STATUS, STATUS.DRAW);
+      return;
+    }
+
+    if (this.props.currentPlayer === PLAYER.CROSS) {
+      this.props.changeState(KEY.CURRENT_PLAYER, PLAYER.NOUGHT);
+    }
+
+    if (this.props.currentPlayer === PLAYER.NOUGHT) {
+      this.props.changeState(KEY.CURRENT_PLAYER, PLAYER.CROSS);
+    }
+  }
+
+  render() {
+    return (
+      <div className={styles.field}>
+        {this.props.field.map((cellPlayer, index) => (
+          <button
+            key={index}
+            className={styles.cell}
+            onClick={() => {
+              this.handleCell(index);
+            }}
+          >
+            {CELL_CONTENT[cellPlayer]}
+          </button>
+        ))}
+      </div>
+    );
+  }
+}
