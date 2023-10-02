@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { Information, Field, Restart } from './components';
 import { initialState } from './utils';
-import styles from './App.module.css';
+// import styles from './App.module.css';
 
 class App extends Component {
   constructor() {
@@ -23,10 +23,10 @@ class App extends Component {
 
   render() {
     return (
-      <div className={styles.app}>
+      <div className="text-center">
         <Information {...this.state} />
         <Field {...this.state} changeState={this.changeState} />
-        <Restart restart={this.restart} />
+        <Restart restart={this.restart} status={this.state.status}/>
       </div>
     );
   }

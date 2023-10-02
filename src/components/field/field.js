@@ -4,7 +4,7 @@ import { fieldSelector } from '../../selectors';
 import { store } from '../../store';
 import { CELL_CONTENT, PLAYER, STATUS, KEY } from '../../constants';
 import { checkEmptyCells, checkWin } from '../../utils';
-import styles from './field.module.css';
+
 
 export class Field extends Component {
   constructor(props) {
@@ -45,11 +45,11 @@ export class Field extends Component {
 
   render() {
     return (
-      <div className={styles.field}>
+      <div className='field'>
         {this.props.field.map((cellPlayer, index) => (
           <button
             key={index}
-            className={styles.cell}
+            className='cell bg-neutral-300'
             onClick={() => {
               this.handleCell(index);
             }}

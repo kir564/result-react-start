@@ -15,6 +15,6 @@ export class Information extends Component {
         : `${PLAYER_ACTION[this.props.status]} ${
             PLAYER_NAME[this.props.currentPlayer]
           }`;
-    return <h3>{info}</h3>;
+    return <h3 className='text-2xl' >{info}</h3>;
   }
 }
